@@ -42,7 +42,8 @@ global $major, $minor, $patch; ?>
         <dt>Planet
         <dd>A Server Implementing is called a Planet.
         <dt>Edge
-        <dd>A Client Implementing is called an Edge.
+        <dd>A Client Implementing is called an Edge. an edge is a client that interacts with the planet. could be a
+            browser extension, the bowser, or an app.
         <dt>The Protocol
         <dd>The Protocol as set forth in This Specification
         <dt>The Specification

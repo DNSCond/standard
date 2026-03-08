@@ -11,7 +11,7 @@ class ToggleTokenList extends Set {
     }
 }
 
-let colorInt = 0;
+let colorInt = 0n;
 // [light, dark]
 const object = {
         'yellow': ['fff100'],
@@ -26,7 +26,7 @@ document.querySelectorAll('.sl var').forEach(each => {
     each.className += ' ' + (each.dataset.variName = `variColor-${each.textContent}`);
     each.addEventListener('click', function () {
         if (toggleTokenList.toggle(each.dataset.variName)) {
-            const colorName = colorNames[colorInt++ % colorNames.length],
+            const colorName = colorNames[colorInt++ % BigInt(colorNames.length)],
                 [colorHex, _colorHexDark] = object[colorName], variName = each.dataset.variName;
             varstyle.textContent += `/*${variName}*/.${CSS.escape(variName)}.${CSS.escape(variName)} {background-color:#${colorHex};}/*${variName}*/`;
         } else {

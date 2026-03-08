@@ -3,7 +3,7 @@
 <head>
     <meta charset=UTF-8>
     <title>The LayerZip Specification (ANTRequest.nl)</title>
-    <base href=/layerzip/0.0.1/>
+    <base href=/standard/layerzip/0.0.2/>
     <meta name="theme-color" content="#00a600">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name=description content="<?= "LayerZip is a program independent way to store"
@@ -27,7 +27,7 @@
     </script>
     <script type=module src="<?= "/require/head2/import-v2.js" ?>"></script>
     <link href="<?= "/require/head2/ANTStylesheet.css" ?>" rel=stylesheet>
-    <link href="<?= "../layerzip.css" ?>" rel=stylesheet>
+    <link href="<?= "../../layerzip.css" ?>" rel=stylesheet>
     <meta name="theme-color" content="#0073a6">
     <link rel=icon
           href="<?= $layerzipIcon = "/dollmaker2/icon/endpoint.php?bgcolor=%23000000&amp;fgcolor=%2300ff00&amp;" .
@@ -35,7 +35,7 @@
           $favicon = "/dollmaker2/icon/endpoint.php?bgcolor=%2300a8f3&amp;fgcolor=%238cfffa&amp;L=%23fff200&amp;" .
                   "W=%23000000&amp;LC=%23ff0000&amp;RC=%230000ff" ?>"/>
     <style><?= array_key_exists('monospace', $_GET) ? 'html{font-family:monospace}' : '' ?></style>
-    <link rel=canonical href=https://antrequest.nl/layerzip/0.0.1/>
+    <link rel=canonical href=https://antrequest.nl/standard/layerzip/0.0.2/>
 </head><?= PHP_EOL;
 require_once '../../HeaderAuto.php' ?>
 <!-- (new Date).toISOString().slice(0,10) -->

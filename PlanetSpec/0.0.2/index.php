@@ -1,8 +1,7 @@
 <?php use function Helpers\json_fromArray;
 use function Helpers\htmlspecialchars12;
 
-require_once '../../createHeader.php';
-?>
+require_once '../../createHeader.php' ?>
 <div class=divs>
     <h1 id=theTop><?= "{$GLOBALS['title']}" ?></h1>
     <p>this Standard Depends on <a href="<?= "/standard/FaviDiD/0.0.1/" ?>">FaviDiD</a> partially.
@@ -17,7 +16,7 @@ require_once '../../createHeader.php';
     <p>this document written on
         <time datetime=2026-03-07 data-tolocaltime=date-only>Sat Mar 07 2026</time>
         is <a href=https://semver.org/>Semantic version</a>
-        <span><?= "{$GLOBALS['major']}.{$GLOBALS['minor']}.{$GLOBALS['patch']}" ?></span>.
+        <span><?= $semver = "{$GLOBALS['major']}.{$GLOBALS['minor']}.{$GLOBALS['patch']}" ?></span>.
         this document is self-published independently.
     <h2 id=external>This Specification uses external references</h2>
     <ul class=li-margin05>
@@ -25,11 +24,42 @@ require_once '../../createHeader.php';
                 NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
                 interpreted as described in RFC 2119.</a>
     </ul>
+    <h2 id=defn>Definitions</h2>
+    <dl class=sl>
+        <dt>Planet
+        <dd>A Server Implementing is called a Planet.
+        <dt>Edge
+        <dd>A Client Implementing is called an Edge. an edge is a client that interacts with the planet. could be a
+            browser extension, the bowser, or an app.
+        <dt>The Protocol
+        <dd>The Protocol as set forth in This Specification
+        <dt>The Specification
+        <dd>The Specification is this htmlpage.
+        <dt id=/Favicond_/><code>/Favicond_/</code>
+        <dd>The Base Path of the protocol interactions. the underscore is a MUST. this path is directly after the
+            domain. (<code>https://{your-domain}/Favicond_/</code>)
+        <dt>REQUIRE
+        <dd>RFC2119's REQUIRED
+        <dt id=Edge-Defined>Edge-Defined
+        <dt id=Planet-Defined>Planet-Defined
+        <dd>A feature whose specific behavior is determined by the host environment rather than this specification.
+            While this document may provide constraints, the Planet or Edge is free to define the exact behavior within
+            those bounds.
+        <dt id=Edge-Approximated>Edge-Approximated
+        <dt id=Planet-Approximated>Planet-Approximated
+        <dd>A feature whose specific behavior is determined by the host environment rather than this specification.
+            While this document may provide constraints, the Planet or Edge is free to define the exact behavior within
+            those bounds, but preferably reacts like the recommending an ideal behavior.
+    </dl>
     <h2 id=planet_json>planet.json</h2>
-    <p><code><dfn>planet.json</dfn></code> is a file in your <a href="<?= "../../FaviDiD/0.0.1/#/Favicond_/" ?>"
-        ><code>/Favicond_/</code></a> folder. which states some information of the planet. A valid
-        <code>planet.json</code> file follows all these requirements
+    <p class=sl><code><dfn>planet.json</dfn></code> is a file in your <a
+                href="<?= "../../FaviDiD/0.0.1/#/Favicond_/" ?>"><code>/Favicond_/</code></a>
+        folder (the <a href="<?= "../../FaviDiD/0.0.1/#/Favicond_/" ?>"><code>/Favicond_/</code></a> folder MUST be
+        after the domain, so it MUST be at <code>https://{your-domain}/Favicond_/planet.json</code>). which states some
+        information of the planet. A valid <code>planet.json</code> file follows all these requirements
     <ul class='sl li-margin05'>
+        <li>Edges MUST fetch it via HTTPS and SHOULD verify the <code>Content-Type</code> is
+            <code>application/json</code>.
         <li>At the Root Object in the JSON you MUST have a key called <code>compat</code> with as value an object,
             this object is called <dfn>the compat object</dfn>.
         <li>inside the compat object, keys MUST be absolute HTTPS URLs identifying the specifications and the values
@@ -40,9 +70,6 @@ require_once '../../createHeader.php';
             supported.
         <li>A Feature-Slug MUST match this ECMAScript flavored RegExp <code>/^[A-Za-z0-9\-_]+$/</code>. slugs are
             case-sensitive.
-            <script>
-                const FeatureSlugRegExp = /^[A-Za-z0-9\-_]+$/;
-            </script>
         <li>URLs MUST be HTTPS URLs
         <li>A Feature-Slug MUST NOT be
             <ul>
@@ -50,17 +77,17 @@ require_once '../../createHeader.php';
             </ul>
         <li>A Feature-Slug MUST NOT start with <code>Favicond_</code>.
             <aside class='warnbox info'><p><strong>Info!</strong> this is done for future compatibility.</aside>
-        <li>the URL <code><?= '<a href=https://antrequest.nl/standard/PlanetSpec/0.0.1/>' .
+        <li>the URL <code><?= "<a href=https://antrequest.nl/standard/PlanetSpec/$semver/>" .
                 preg_replace('/(?<!<)\\//', '<wbr>/',
-                        'https://antrequest.nl/standard/PlanetSpec/0.0.1/</a>'
+                        "https://antrequest.nl/standard/PlanetSpec/$semver/</a>"
                 ) ?></code>
             and the Feature-Slug <code>main</code> MUST be listed as supported.
             <aside class='warnbox info'><p><strong>Info!</strong> this is done for Forks. when a fork is incompatible
                     with This Specification, it MUST list
-                    <code><?= '<a href=https://antrequest.nl/standard/PlanetSpec/0.0.1/>' .
+                    <code><?= "<a href=https://antrequest.nl/standard/PlanetSpec/$semver/>" .
                         preg_replace('/(?<!<)\\//', '<wbr>/',
-                                'https://antrequest.nl/standard/PlanetSpec/0.0.1/</a>'
-                        ) ?></code> as <code>false</code>.
+                                "https://antrequest.nl/standard/PlanetSpec/$semver/</a>"
+                        ) ?></code> as <code>false</code> or omit the url altogether.
             </aside>
         <li>An <code>extends</code> key where the Feature-Slugs MUST link to a specification linked in the compat object
             or be Omitted entirely.
@@ -72,7 +99,7 @@ require_once '../../createHeader.php';
     </aside>
     <h2 id=examples><?= "Examples of {$GLOBALS['spec']}" ?></h2>
     <pre><code><?= htmlspecialchars12(json_fromArray(['compat' => [
-                    'https://antrequest.nl/standard/PlanetSpec/0.0.1/' => [
+                    "https://antrequest.nl/standard/PlanetSpec/$semver/" => [
                             'main' => true,
                     ],
                     'https://antrequest.nl/standard/FaviDiD/0.0.1/' => [
@@ -106,11 +133,21 @@ require_once '../../createHeader.php';
         <dd>ignore it, and treat it as if it was false.
         <dt>the <code>planet.json</code> isnt valid json or it wasnt served with 200
         <dd>Resolve <code>{"compat":{}}</code> instead, basically nothing is supported
+        <dt>a <code>planet.json</code> lists <code><?= "<a href=https://antrequest.nl/standard/PlanetSpec/$semver/>" .
+                preg_replace('/(?<!<)\\//', '<wbr>/',
+                        "https://antrequest.nl/standard/PlanetSpec/$semver/</a>"
+                ) ?></code> as <code>false</code>.
+        <dd>this is <a href=#Edge-Approximated>Edge-Approximated</a>. the ideal behavior is as follows: Edges MAY cancel
+            the whole operation. Edges SHOULD do as the Fork (if any) set forth unless that is impossible or otherwise
+            unachievable (for example violates applicable law).
     </dl>
     <h2 id=Extendable>Extendable Features</h2>
-    <p>if a standard is forked (like i encourage mine to be) you might inherit features from them. which is where the
-        <dfn><code>extends</code></dfn> comes in. it if a feature doesnt exist in this feature object the Edge MUST go
+    <p class=sl>if a standard is forked (like i encourage mine to be) you might inherit features from them. which is
+        where the
+        <dfn><code>extends</code></dfn> comes in. if a feature doesnt exist in this feature object the Edge MUST go
         to the <code>extends</code> object and look there.
+    <p class=sl>Edges MUST detect cycles in the <code>extends</code> chain (e.g., A -&gt; B -&gt; C -&gt; A) and return
+        <code>false</code> for the feature if a cycle is detected.
     <div class='sl li-margin05'>
         <h2 id=ResolveSupported><var>Resolve_Supported</var> (<var>compat</var>, <var>url</var>, <var>slug</var>,
             <var>seen</var>)</h2>
@@ -137,6 +174,9 @@ require_once '../../createHeader.php';
                 </ul>
         </ul>
     </div>
+    <h2 id=caching>Caching</h2>
+    <!--(fn(string$string):string=>str_replace('<','&lt;',str_replace('&','&amp;',$string)))-->
+    <p>Edges SHOULD respect caching headers. caching headers Planets set is Planet-Defined.
     <h2 id=Authornotes>Author's Notes</h2>
     <p>please tell me how i did. it was my first time writing something like this. this is self-published independently.
 </div>
