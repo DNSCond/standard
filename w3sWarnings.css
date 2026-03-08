@@ -1,0 +1,27 @@
+/* https://www.w3schools.com/howto/howto_css_notes.asp */
+
+.warnbox {
+    margin-bottom: 15px;
+    padding: 4px 12px;
+}
+
+.danger.warnbox {
+    background-color: #ffdddd;
+    border-left: 6px solid #f44336;
+}
+
+.success.warnbox {
+    background-color: #ddffdd;
+    border-left: 6px solid #04AA6D;
+}
+
+.info.warnbox {
+    background-color: #e7f3fe;
+    border-left: 6px solid #2196F3;
+}
+
+
+.warning.warnbox {
+    background-color: #ffffcc;
+    border-left: 6px solid #ffeb3b;
+}

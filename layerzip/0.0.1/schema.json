@@ -1,0 +1,106 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LayerZip Configuration",
+  "type": "object",
+  "required": [
+    "specVersion",
+    "width",
+    "height",
+    "layers"
+  ],
+  "properties": {
+    "specVersion": {
+      "type": "string",
+      "pattern": "^0\\.0\\.1$",
+      "description": "the specification version. MUST be matched against the specification for disambiguation. in this schema it MUST be {\"0.0.1\"}. SHOULD be matched to disambiguate specifics of a LayerZip spec",
+      "$comment": "in terms of regex it must be {\"^\\d+\\.\\d+\\.\\d+$\"}"
+    },
+    "width": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "MUST be the Width of the canvas, in pixels."
+    },
+    "height": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "MUST be the Height of the canvas, in pixels."
+    },
+    "layers": {
+      "type": "array",
+      "description": "MUST be an array of layers",
+      "items": {
+        "$ref": "#/definitions/layer"
+      }
+    }
+  },
+  "definitions": {
+    "layer": {
+      "type": "object",
+      "description": "a layer",
+      "required": [
+        "type",
+        "name",
+        "path"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "rasterlayer",
+            "vectorlayer",
+            "grouplayer"
+          ],
+          "description": "MUST be one of {\"rasterlayer\"} if a png is associated, {\"vectorlayer\"} if a svg is associated, {\"grouplayer\"} if a directory is associated."
+        },
+        "name": {
+          "type": "string",
+          "description": "the layer's name as seen in the editor. SHOULD be matched exactly."
+        },
+        "path": {
+          "type": "string",
+          "description": "the layer's path. MUST be Normalized. the path MUST start from the {\"layerzip.json\"}."
+        },
+        "visible": {
+          "type": "boolean",
+          "description": "if omitted MUST default to {{true}}. if present MUST be a json boolean representing if its visible in the editor. must be the actual layer content even if the layer is set to be visible false.",
+          "default": true
+        },
+        "locked": {
+          "type": "boolean",
+          "description": "if omitted MUST default to {{false}}. if present MUST be a json boolean representing if its locked in the editor. if the editor doesnt support layer locking then put false.",
+          "default": false
+        },
+        "opacity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "if omitted MUST default to {{1}}. if present MUST be a json number representing its opacity.",
+          "default": 1
+        },
+        "layers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/layer"
+          },
+          "description": "if omitted MUST default to an empty array. MUST only exist if the type is {\"grouplayer\"}."
+        },
+        "blendMode": {
+          "type": "string",
+          "enum": [
+            "normal",
+            "multiply",
+            "screen",
+            "overlay",
+            "color-dodge",
+            "color-burn",
+            "hard-light",
+            "soft-light",
+            "difference"
+          ],
+          "default": "normal",
+          "description": "Blend mode following CSS / Porter-Duff naming conventions. If omitted or unknown, MUST fallback to 'normal'. Editors SHOULD support at least the first four values."
+        }
+      }
+    }
+  }
+}
