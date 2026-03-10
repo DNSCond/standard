@@ -21,7 +21,7 @@
 }
 
 
-.warning.warnbox {
+.warning.warnbox, .warn.warnbox {
     background-color: #ffffcc;
     border-left: 6px solid #ffeb3b;
 }

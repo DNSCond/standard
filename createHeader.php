@@ -1,8 +1,8 @@
 <?php use ANTHeader\ANTNavArbitraryHTML;
-use ANTHeader\ANTNavLinkTag;
-use function ANTHeader\ANTNavBinary;
 use function ANTHeader\ANTNavFavicond;
+use function ANTHeader\ANTNavBinary;
 use function ANTHeader\create_head2;
+use ANTHeader\ANTNavLinkTag;
 use ANTHeader\ANTNavScript;
 
 require_once "{$_SERVER['DOCUMENT_ROOT']}/require/createHead2.php";
@@ -26,9 +26,16 @@ create_head2($title = "ANTRequest's $spec Specification (Version $major.$minor.$
     'base' => "/standard/$spec/$major.$minor.$patch/",
 ], [new ANTNavLinkTag('stylesheet', ['/standard/layerzip.css', '/standard/w3sWarnings.css']),
     new ANTNavScript('/standard/variableSelection.js', true),
-    new ANTNavArbitraryHTML('classstyle','<style id=varstyle></style>'),
+    new ANTNavArbitraryHTML('classstyle', '<style id=varstyle></style>'),
 ], [ANTNavFavicond('https://ANTRequest.nl', 'ANT\'s Gallery'),
     ANTNavBinary('https://ANTRequest.nl/standard/', 'ANTRequest\'s Technical Specifications'),
     ANTNavBinary(".", $title, true)]);
 $GLOBALS['title'] = $title;
 require_once __DIR__ . '/HeaderAuto.php';
+function htmlEncodeMinimal(string $value): string
+{
+    $html = str_replace('<', '&lt;',
+        str_replace('&', '&amp;',
+            "$value"));
+    return ($html);
+}

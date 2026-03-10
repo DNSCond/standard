@@ -2,6 +2,7 @@
 :root {
     --primaryColor: #00ff00;
     --secondaryColor: #00a600;
+    --col: #d5653d;
 }
 
 button, input, textarea, .monospace, .ms {

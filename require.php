@@ -16,7 +16,7 @@ function createTBody(array $jsonContent): string
         $requirements = 'None';
         if (array_key_exists('pattern', $item)) {
             $pattern = htmlspecialchars12($item['pattern']);
-            $requirements = "string MUST match <code>/$pattern/)</code> json regxep";
+            $requirements = "string MUST match <code>/$pattern/</code> json regxep";
         } elseif (array_key_exists('enum', $item)) {
             $requirements = 'one of <ul class=sl><li>' . implode('<li>',
                     array_map(fn($string) => '<code>' .

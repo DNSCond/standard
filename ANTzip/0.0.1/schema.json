@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ANT.zip Configuration",
+  "type": "object",
+  "required": [
+    "specVersion",
+    "did",
+    "fileIntegrity"
+  ],
+  "properties": {
+    "did": {
+      "type": "string",
+      "pattern": "^did:favidid:ed25519:[1-9A-HJ-NP-Za-km-z]+$",
+      "description": "the signer's did"
+    },
+    "specVersion": {
+      "type": "string",
+      "pattern": "^0\\.0\\.1$",
+      "description": "the specification version. MUST be matched against the specification for disambiguation. in this schema it MUST be {\"0.0.1\"}. SHOULD be matched to disambiguate specifics of a ANT.zip spec",
+      "$comment": "in terms of regex it must be {\"^\\d+\\.\\d+\\.\\d+$\"}"
+    },
+    "fileIntegrity": {
+      "type": "array",
+      "description": "MUST be an array of {{fileIntegrity}} objects",
+      "items": {
+        "$ref": "#/definitions/fileIntegrity"
+      }
+    }
+  },
+  "definitions": {
+    "fileIntegrity": {
+      "type": "object",
+      "description": "a layer",
+      "required": [
+        "path",
+        "integrity"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "the File's path relative to {\"ANT.json\"}, MUST start with {\"/\"}. MUST be Normalized."
+        },
+        "integrity": {
+          "type": "string",
+          "pattern": "^(?:SHA(?:256|512)|BLAKE3)-[1-9A-HJ-NP-Za-km-z]+$",
+          "description": "the algorithm and a base58 (bitcoin alphabet) hash of that hash function"
+        },
+        "mimetype": {
+          "type": "string",
+          "pattern": "^[a-z]+/[a-z\\-]+(?:\\+[a-z]+)?$",
+          "description": "the File's media type"
+        }
+      }
+    }
+  }
+}
