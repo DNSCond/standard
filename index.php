@@ -82,7 +82,7 @@ foreach ($array as $item) {
                         $warningHTML = '<p>No applicableWarning';
                     }
                     $result .= "<tr><td><a href=$slugHTML/$versionHTML/>$versionHTML</a><td>$htmlTimeTag<td>$warningHTML";
-                    $result .= "<td><a download=$slugHTML/$versionHTML.txt href=$slugHTML/$versionHTML/>$versionHTML</a>";
+                    $result .= "<td><a download=$slugHTML-$versionHTML.txt href=$slugHTML/$versionHTML/>$versionHTML</a>";
                 }
                 $result .= "</tbody></table></div>";
             }
