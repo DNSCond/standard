@@ -9,7 +9,7 @@ global $major, $minor, $patch ?>
         from you.
     <p>to use <a href=#FaviDiD>FaviDiD</a> you can use This Specification to insure interoperability. If you do not Like
         where this is going please fork.
-    <h2 id=TableOfContents>Table Of Contents</h2>
+    <div><?= $GLOBALS['applicableWarning'] ?></div><h2 id=TableOfContents>Table Of Contents</h2>
     <details open>
         <summary>Table Of Contents</summary>
         <!-- Favicond-render-TableOfContents -->

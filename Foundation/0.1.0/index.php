@@ -1,13 +1,11 @@
-<?php use function Helpers\json_fromArray;
-
-require_once '../../createHeader.php';
-global $major, $minor, $patch ?>
+<?php require_once '../../createHeader.php' ?>
 <div class=divs>
     <h1 id=theTop><?= "{$GLOBALS['title']}" ?></h1>
     <p>The <dfn id="spec-<?= $GLOBALS['spec'] ?>"><?= "{$GLOBALS['title']}" ?></dfn> Standard is a Meta Standard that
         defines things all other ANTRequest Standards use.
     <p>to use <a href="#spec-<?= $GLOBALS['spec'] ?>"><?= "{$GLOBALS['title']}" ?></a> you can use This Specification to
         insure interoperability. If you do not Like where this is going please fork.
+    <div><?= $GLOBALS['applicableWarning'] ?></div>
     <h2 id=TableOfContents>Table Of Contents</h2>
     <details open>
         <summary>Table Of Contents</summary>
@@ -15,7 +13,7 @@ global $major, $minor, $patch ?>
     </details>
     <h2 id=documentStatus>Status of this document</h2>
     <p>this document written on
-        <time datetime=2026-03-10 data-tolocaltime=date-only>Tue Mar 10 2026</time>
+        <time datetime="<?= $GLOBALS['mtime'] ?>" data-tolocaltime=date-only><?= $GLOBALS['htMTime'] ?></time>
         is <a href=https://semver.org/>Semantic version</a>
         <span><?= "{$GLOBALS['major']}.{$GLOBALS['minor']}.{$GLOBALS['patch']}" ?></span>.
         this document is self-published independently.

@@ -1,9 +1,40 @@
-# ai generated class
+import json, hashlib
+from datetime import datetime, timezone
 from pathlib import Path
 import fnmatch
+import os, re
 import shutil
 
 
+def sha256_file(file_path: Path | str, truebytes: bool):
+    sha256 = hashlib.sha256()
+    # Read the file in chunks to handle large files
+    with open(file_path, "rb") as f:
+        for chunk in iter(lambda: f.read(8192), b""):
+            sha256.update(chunk)
+    if truebytes:
+        return sha256.digest()  # Return raw bytes
+    return sha256.hexdigest()
+
+
+def base58_encode(data: bytes) -> str:
+    # Base58 alphabet (Bitcoin style)
+    BASE58_ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+    num = int.from_bytes(data, byteorder="big")
+    encode = ""
+    while num > 0:
+        num, rem = divmod(num, 58)
+        encode = BASE58_ALPHABET[rem] + encode
+    # Preserve leading zeros as '1's
+    n_pad = len(data) - len(data.lstrip(b"\0"))
+    return "1" * n_pad + encode
+
+
+def sha256_base58_file(file_path: Path | str):
+    return base58_encode(sha256_file(file_path, True))
+
+
+# ai generated class
 class GitIgnore:
     def __init__(self, base: Path, file_name: str | None = ".gitignore"):
         self.base = base.resolve()
@@ -100,6 +131,48 @@ class GitIgnore:
 
 
 def main():
+    metadata_key = 'metadata'
+    result = {metadata_key: dict()}
+    prev_data = dict()
+    try:
+        with open('../lastModified.json', 'rt', encoding='utf8') as file:
+            prev_data = json.loads(file.read())
+    except FileNotFoundError:
+        pass
+    for p in Path('..').glob('./*/*/index.php'):
+        if bool(matches := re.search(
+                '/([a-zA-Z0-9]+)/(\\d+)\\.(\\d+)\\.(\\d+)/index\\.php$',
+                str(p).replace('\\', '/'))):
+            mtime = re.sub('\\.\\d+', '', datetime.fromtimestamp(
+                os.path.getmtime(p), tz=timezone.utc).isoformat()).replace("+00:00", "Z")
+            if matches.group(1) not in result[metadata_key]:
+                result[metadata_key][matches.group(1)] = dict()
+            semver = f'{matches.group(2)}.{matches.group(3)}.{matches.group(4)}'
+            if semver not in result[metadata_key][matches.group(1)]:
+                result[metadata_key][matches.group(1)][semver] = dict()
+
+            prev = prev_data.get('metadata', dict()).get(
+                matches.group(1), dict()).get(semver, dict())
+            filehash = 'sha256B58-' + sha256_base58_file(p)
+            if prev.get('hash') == filehash:
+                result[metadata_key][matches.group(1)][semver]['lastModified'] = prev.get('lastModified', mtime)
+            else:
+                result[metadata_key][matches.group(1)][semver]['lastModified'] = mtime
+            result[metadata_key][matches.group(1)][semver]['hash'] = filehash
+            result[metadata_key][matches.group(1)][semver]['warning'] = {
+                'warningLevel': None,  # 'warning' | 'danger' | 'info'
+                'warningContent': None}
+            default = result[metadata_key][matches.group(1)][semver]['warning']
+            try:
+                with open(str(p).replace('\\', '/').replace('/index.php', '/metadata.json'),
+                          'rt', encoding='utf8') as file:
+                    data = json.loads(file.read())
+                    result[metadata_key][matches.group(1)][semver]['warning'] = data.get('warning', default)
+            except FileNotFoundError:
+                pass
+    with open('../lastModified.json', 'wt', encoding='utf8') as file:
+        file.write(json.dumps(result))
+    pass
     directory = Path('..')
     dst = Path('../piout') / 'standard'
     if dst.exists():

@@ -22,6 +22,41 @@ $GLOBALS['spec'] = ($spec);
 $GLOBALS['major'] = $major;
 $GLOBALS['minor'] = $minor;
 $GLOBALS['patch'] = $patch;
+$GLOBALS['mtime'] = gmdate('Y-m-d\\TH:i:s\\Z',
+    filemtime(__DIR__ . "/{$GLOBALS['spec']}/$major.$minor.$patch/index.php"));
+$GLOBALS['warningLevel'] = null;
+$GLOBALS['warningContent'] = null;
+$matches = json_decode(file_get_contents(__DIR__ . '/lastModified.json'), true)['metadata'];
+
+if ($matches[$GLOBALS['spec']]) {
+    if ($matches[$GLOBALS['spec']]["$major.$minor.$patch"]) {
+        if ($matches[$GLOBALS['spec']]["$major.$minor.$patch"]['lastModified']) {
+            $GLOBALS['mtime'] = $matches[$GLOBALS['spec']]["$major.$minor.$patch"]['lastModified'];
+        }
+        $array = $matches[$GLOBALS['spec']]["$major.$minor.$patch"];
+        $warnArray = $array['warning'];
+        if ($warnArray['warningLevel']) {
+            $GLOBALS['warningLevel'] = match ($warnArray['warningLevel']) {
+                'warning' => 'warning',
+                'danger' => 'danger',
+                'info' => 'info',
+                default => null,
+            };
+        }
+        if ($warnArray['warningContent']) {
+            $GLOBALS['warningContent'] = $warnArray['warningContent'];
+        }
+        if (empty($warnArray['warningLevel']) || empty($warnArray['warningContent'])) {
+            $GLOBALS['warningLevel'] = null;
+            $GLOBALS['warningContent'] = null;
+        }
+    }
+}
+$GLOBALS['htMTime'] = gmdate('D M d Y', strtotime($GLOBALS['mtime']));
+$GLOBALS['applicableWarning'] = '';
+if (!empty($GLOBALS['warningLevel'])) {
+    $GLOBALS['applicableWarning'] = "<div class='warnbox {$GLOBALS['warningLevel']}'><p><strong>{$GLOBALS['warningLevel']}!</strong> {$GLOBALS['warningContent']}</div>";
+}
 create_head2($title = "ANTRequest's $spec Specification (Version $major.$minor.$patch)", [
     'base' => "/standard/$spec/$major.$minor.$patch/",
 ], [new ANTNavLinkTag('stylesheet', ['/standard/layerzip.css', '/standard/w3sWarnings.css']),

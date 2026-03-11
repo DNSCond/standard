@@ -103,3 +103,7 @@ code.sl, .sl code, var.sl, .sl var {
 ol.TableOfContents, ol.TableOfContents ol, ul.TableOfContents, ul.TableOfContents ul {
     padding-left: 2.5ch;
 }
+
+body nav:first-child {
+    font-family: monospace;
+}

@@ -7,7 +7,7 @@ require_once '../../createHeader.php' ?>
     <p>this Standard Depends on <a href="<?= "/standard/FaviDiD/0.0.1/" ?>">FaviDiD</a> partially.
     <p><dfn id=FeatureTesting>Feature Testing</dfn> is the practice of discovering which features a Planet supports.
         This specification intentionally keeps feature discovery simple.
-    <h2 id=TableOfContents>Table Of Contents</h2>
+    <div><?= $GLOBALS['applicableWarning'] ?></div><h2 id=TableOfContents>Table Of Contents</h2>
     <details open>
         <summary>Table Of Contents</summary>
         <!-- Favicond-render-TableOfContents -->
