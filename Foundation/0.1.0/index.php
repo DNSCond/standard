@@ -49,6 +49,7 @@
                     Engines. Most Languages and Libraries come with cryptographic functions that work on bytes. so by
                     not allowing JSON Canonicalization at all, i can save a lot of difficulties for those that dont want
                     to. and again, You can Pretty Print it after you verified the thing.</aside>
+        <li>Interactions MUST be in the encoding UTF-8.
     </ul>
     <h2 id=defn>Definitions</h2>
     <dl class=sl>
