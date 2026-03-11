@@ -74,3 +74,50 @@ function htmlEncodeMinimal(string $value): string
             "$value"));
     return ($html);
 }
+
+function base64UrlEncode(string $data): string
+{
+    return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+}
+
+function insert_wbr(string $string, int $every = 20, $seperator = '<wbr>'): string
+{
+    return implode($seperator, str_split($string, $every));
+}
+
+function underscoreNumber(int|float $number)
+{
+    // If it's a float, we decide how many decimals to keep (e.g., 2)
+    // If it's an int, we keep 0.
+    $decimals = is_float($number) ? 2 : 0;
+    return number_format($number, $decimals, '.', '_');
+}
+
+function base58_encode(string $bytes): string
+{
+    $alphabet = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+    if ($bytes === '') return '';
+
+    $data = array_values(unpack('C*', $bytes));
+    // Count leading zero bytes
+    $zeroCount = 0;
+    while ($zeroCount < count($data) && $data[$zeroCount] === 0) {
+        $zeroCount++;
+    }
+    $result = '';
+    while (count($data) > 0) {
+        $carry = 0;
+        $next = [];
+        foreach ($data as $byte) {
+            $carry = ($carry << 8) + $byte; // multiply by 256 and add byte
+            $digit = intdiv($carry, 58);
+            $carry %= 58;
+            if (count($next) > 0 || $digit !== 0) {
+                $next[] = $digit;
+            }
+        }
+        $result = $alphabet[$carry] . $result;
+        $data = $next;
+    }
+    return str_repeat('1', $zeroCount) . $result;
+}

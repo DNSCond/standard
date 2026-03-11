@@ -8,7 +8,7 @@ require_once '../../createHeader.php' ?>
         <p>this Standard Depends on <a href="<?= "/standard/FaviDiD/0.0.1/" ?>">FaviDiD</a> and <a
                     href="<?= "/standard/PlanetSpec/0.0.2/" ?>">PlanetSpec</a>.
         <p><dfn>ANT.zip</dfn> and <dfn>ANT.enx</dfn> (ENcrypted eXchange) are a signed format and an encrypted format
-            respectively. they are used throughout the Favispecs which defines all sorts of use cases. <div><?= $GLOBALS['applicableWarning'] ?></div>
+            respectively. they are used throughout the Favispecs which defines all sorts of use cases.
         <div><?= $GLOBALS['applicableWarning'] ?></div><h2 id=TableOfContents>Table Of Contents</h2>
         <details open>
             <summary>Table Of Contents</summary>

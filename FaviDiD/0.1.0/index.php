@@ -9,7 +9,8 @@ global $major, $minor, $patch ?>
         from you.
     <p>to use <a href=#FaviDiD>FaviDiD</a> you can use This Specification to insure interoperability. If you do not Like
         where this is going please fork.
-    <div><?= $GLOBALS['applicableWarning'] ?></div><h2 id=TableOfContents>Table Of Contents</h2>
+    <div><?= $GLOBALS['applicableWarning'] ?></div>
+    <h2 id=TableOfContents>Table Of Contents</h2>
     <details open>
         <summary>Table Of Contents</summary>
         <!-- Favicond-render-TableOfContents -->
@@ -21,7 +22,7 @@ global $major, $minor, $patch ?>
         this document is self-published independently.
     <p>i am still Figuring things out. this is not final design and might be vague, impossible, or otherwise not
         implementable. im still seeking to bring this closer to my vision.
-    <!--<h2 id=internal>This Specification Depends On</h2>
+        <!--<h2 id=internal>This Specification Depends On</h2>
     <ul><?= (function (array $array): string {
             $result = '';
             foreach ($array as $item) {
@@ -155,7 +156,8 @@ global $major, $minor, $patch ?>
             NOT generate nonces shorter than 16 bytes.
         <li>REQUIRE the Edge to give you their <a href=#did-definition>FaviDiD</a>
             (it is only their <a href=#Public-Key><var>Public-Key</var></a>, it is ok)
-        <li><a href=http://localhost/standard/FaviDiD/0.1.0/#AuthenticationForEdges-FirstTime>the Edge MUST sign the
+        <li><a href=https://antrequest.nl/standard/FaviDiD/0.1.0/#AuthenticationForEdges-FirstTime>the Edge MUST sign
+                the
                 Nonce in a JWT described below.</a>
         <li>You MUST check if the Nonce in their JWT Matches exactly as you gave it and that 300 seconds MUST NOT have
             passed.
@@ -348,16 +350,6 @@ global $major, $minor, $patch ?>
                 })($nonce = base64UrlEncode(random_bytes(17)),
                         20);
                 require_once "{$_SERVER['DOCUMENT_ROOT']}/require/JSONWT.php";
-                function insert_wbr(string $s, int $every = 20): string
-                {
-                    return implode('<wbr>', str_split($s, $every));
-                }
-
-                function base64UrlEncode(string $data): string
-                {
-                    return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
-                }
-
                 $iat = $_SERVER['REQUEST_TIME'] ?? time() ?></code>)<br>
             and says to sign it.
         <li>User copies the string and pastes it into their FaviDiD Authenticator app (the <a href=#Edge>Edge</a>).

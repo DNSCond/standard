@@ -79,10 +79,10 @@ foreach ($array as $item) {
                     if (!empty($warning['warningLevel'])) {
                         $warningHTML = "<div class='warnbox {$warning['warningLevel']}'><p><strong>{$warning['warningLevel']}!</strong> {$warning['warningContent']}</div>";
                     } else {
-                        $warningHTML = '<p>No applicableWarning';
+                        $warningHTML = '<p>No applicable Warning';
                     }
-                    $result .= "<tr><td><a href=$slugHTML/$versionHTML/>$versionHTML</a><td>$htmlTimeTag<td>$warningHTML";
-                    $result .= "<td><a download=$slugHTML-$versionHTML.txt href=$slugHTML/$versionHTML/>$versionHTML</a>";
+                    $result .= "<tr><td><a href=$slugHTML/$versionHTML/>$versionHTML</a><td>$htmlTimeTag<td>$warningHTML<td><a";
+                    $result .= " download=$slugHTML-$versionHTML.html href=$slugHTML/$versionHTML/>$versionHTML (download)</a>";
                 }
                 $result .= "</tbody></table></div>";
             }
