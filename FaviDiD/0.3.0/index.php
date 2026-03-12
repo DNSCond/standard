@@ -33,7 +33,7 @@ require_once '../../createHeader.php' ?>
                 }
             }
             return $result;
-        })(['Foundation/0.1.0']) ?></ul>
+        })(['Foundation/0.2.0']) ?></ul>
     <h2 id=external>This Specification uses external references</h2>
     <ul class=li-margin05>
         <li><a href=https://www.rfc-editor.org/rfc/rfc2119>The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
@@ -104,10 +104,11 @@ require_once '../../createHeader.php' ?>
                                 "{$GLOBALS['major']}-{$GLOBALS['minor']}"
                                 : "{$GLOBALS['major']}")) ?></code> MUST be present for this specification.
             <ol>
-                <li>Generate a Nonce and keep it for 300 Seconds. how you create the Nonce is <a
-                            href="<?= "../../Foundation/0.1.0/#Planet-Approximated" ?>">Planet-Approximated</a> but MUST
-                    be within the base58 alphabet. Nonce SHOULD be >=128 bits entropy (e.g. 22–32 random bytes ->
-                    base58, resulting in ~30–44 chars). Planets MUST NOT generate nonces shorter than 16 bytes.
+                <li id=nonce-generation>Generate a Nonce and keep it for 300 Seconds. <span id=nonce-requirements>how you
+                        create the Nonce is <a href="<?= "../../Foundation/0.2.0/#Planet-defined" ?>">Planet-defined</a>
+                        but MUST be within the base58 alphabet. Nonce MUST be >=128 bits entropy (e.g. 22–32 random bytes ->
+                    base58, resulting in ~30–44 chars). Planets MUST NOT generate nonces shorter than 16 bytes.</span>
+                <li>associate the Nonce with the <code>F-FaviDiD:</code>.
                 <li>Inset the just generated Nonce in the Nonce field.
             </ol>
         <li>the Edge MUST prompt the user with the Realm, the User MUST give informed consent to sign the challenge. the
@@ -127,44 +128,62 @@ require_once '../../createHeader.php' ?>
                     <pre><code><?= htmlEncodeMinimal($header = json_fromArray([
                                     'typ' => 'JWT', 'alg' => 'EdDSA', 'proto' => 'FaviDiD-Auth',
                             ], false)) ?></code></pre>
-                    and then a dot (which is <code><?= htmlEncodeMinimal(base64UrlEncode(
-                                $header)) . '.' ?></code>) which is the JWT Header.
+                    and then a dot (which is <code><?= insert_wbr(htmlEncodeMinimal(base64UrlEncode(
+                                $header)), 10) . '.' ?></code>) which is the JWT Header.
                     <aside class='warnbox info'><p><strong>Info!</strong> the exact string is Edge-Defined, as long as
                             these properties match these values after verifying and decoded.</aside>
                 <li><a href=#payload>the JWT Payload described below</a> and then a dot.
                 <li>the signature. signed by the private key of the one login in. sign the Base 64 Url JWT header and
                     Base 64 Url JWT Payload separated by a dot.
             </ol>
-        <li>Perform either one the following
-            <dl>
+        <li id=verification-steps>The Planet MUST do the following in any order
+            <ul>
+                <li>Verify the Signature of the JWT as Received, using the Ed25519 algorithm, if that <code>alg</code>
+                    isnt <code>EdDSA</code> the Planet MUST skip to <a href=#authenticationFailure>authentication
+                        Failure</a>.
+                <li>Verify the JWT's <code>aud</code> claim is equal to the Domain.
+                <li>Verify the JWT's <code>iss</code> and <code>sub</code> are equal and are equal to the FaviDiD
+                    associated with the Nonce.
+                <li>Verify the current time is within the JWT's <code>nbf</code> and <code>exp</code>. ignore
+                    <code>iat</code>.
+                <li>Verify the JWT's <code>nonce</code> claim is correct.
+            </ul>
+        <li><p>Perform either one the following
+            <dl class=dd-margin05>
                 <dt id=successfulAuthentication>successful authentication.
                 <dd><p>planets MUST respond with Status Code <code><a
                                     href=https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/200>200</a></code>
                         <code><a href=https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Type
-                            >Content-Type: application/json</a></code> and a Body with At Least the following Keys.
-                    <pre><code><?= htmlEncodeMinimal(json_fromArray([
-                                    'proto' => 'FaviDiD-Auth',
-                                    'success' => true,
-                                    'nonce' => '<Nonce>',
-                                    'PlanetaryCode' => '<PlanetaryCode>',
-                                    'PlanetaryCode-ExpiresAt' => '<PlanetaryCode-ExpiresAt>'
-                            ])) ?></code></pre>
-                    <p><code>&lt;Nonce></code> MUST be replaced with the actual Nonce used for verification above,
-                        exactly.
-                    <p><code>&lt;PlanetaryCode></code> MUST be replaced with a session token. the Planetary Code MAY be
-                        kept for as long as the session is valid and hasnt expired yet.
-                    <p><code>&lt;PlanetaryCode-ExpiresAt></code> MUST be set to when <code>&lt;PlanetaryCode></code>
-                        expires, in the form of <a
-                                href=https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Date
-                        >HTTP DATE</a>. when it expires is <a href="<?= "../../Foundation/0.1.0/#Planet-Defined" ?>">Planet-Defined</a>.
-                <dt>Incorrect Nonce. (error code: <code>IncorrectNonce</code>)
-                <dt>Invalid Signature. (error code: <code>InvalidSignature</code>)
-                <dt>Invalid Ed25519 Public Key. (error code: <code>InvalidEdPublicKey</code>)
-                <dt>Invalid Syntax. (error code: <code>InvalidSyntax</code>)
-
-                <dt>Unsupported Signature. (error code: <code>UnsupportedSignature</code>)
-                <dt>Unsupported Ed25519 Public Key. (error code: <code>UnsupportedEdPublicKey</code>)
-                <dt>Unsupported Syntax. (error code: <code>UnsupportedSyntax</code>)
+                            >Content-Type: application/json</a></code> and with the following
+                    <div class=table-div>
+                        <table class='flow-width sl'>
+                            <thead><?= "<tr><th>Name<th>Value<th>Where" ?></thead>
+                            <tbody>
+                            <tr>
+                                <td><code><var>proto</var></code>
+                                <td>MUST be set to <code>FaviDiD-Auth</code>.
+                                <td>Body
+                            <tr>
+                                <td><code><var>success</var></code>
+                                <td>MUST be set to the JSON value <code>true</code>.
+                                <td>Body
+                            <tr>
+                                <td><code><var>PlanetaryCode</var></code>
+                                <td>MUST be a Cryptographically Secure Session token of <a
+                                            href="<?= "../../Foundation/0.2.0/#Planet-Defined" ?>">Planet-Defined</a>
+                                    generation. the cookie expiration advertised MUST be when the session token expires.
+                                    MUST set the <code>Secure</code> flag, SHOULD set the <code>HttpOnly</code> flag.
+                                <td>
+                                    <code><a href=https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie
+                                        >Set-Cookie</a></code>
+                            <tr>
+                                <td><code><var>nonce</var></code>
+                                <td>MUST be set with the actual Nonce used for verification above, exactly.
+                                <td>Body
+                            </tbody>
+                        </table>
+                    </div>
+                <dt id=authenticationFailure>authentication Failure
                 <dd><p>planets MUST respond with Status Code <code><a
                                     href=https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/401>401</a></code>
                         <code><a href=https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Type
@@ -172,30 +191,25 @@ require_once '../../createHeader.php' ?>
                     <pre><code><?= htmlEncodeMinimal(json_fromArray([
                                     'proto' => 'FaviDiD-Auth',
                                     'success' => false,
-                                    'errorCode' => '<errorCode>',
                             ])) ?></code></pre>
                     <div>
                         <p>The <a href=https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Retry-After
                             >HTTP Retry-After Header SHOULD be set (MUST be either an integer number of seconds (e.g.
                                 300) or an HTTP-date string (RFC 7231).)</a> Indicating how long an <a
-                                    href="<?= "../../Foundation/0.1.0/#Edge" ?>">Edge</a> SHOULD wait before retrying.
+                                    href="<?= "../../Foundation/0.2.0/#Edge" ?>">Edge</a> SHOULD wait before retrying.
                             if the value signals a date after 1 hour compared to the <a
                                     href=https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Date
-                            >HTTP Date Header</a> the <a href="<?= "../../Foundation/0.1.0/#Edge" ?>">Edge</a> MUST
+                            >HTTP Date Header</a> the <a href="<?= "../../Foundation/0.2.0/#Edge" ?>">Edge</a> MUST
                             abort automatic Retries, and SHOULD honor the Request, only retrying at User Request. if not
                             set Edges SHOULD interpret <code>Retry-After: 15</code>
                         <aside class='warnbox info'><p><strong>Info!</strong>
                                 Retry-After SHOULD be included on 401 responses caused by nonce/signature failure,
                                 indicating when the client MAY retry with a new nonce request.</aside>
-                        <p><code>&lt;Nonce></code> MUST be replaced with the Planet Generated Nonce used for
-                            verification above, exactly.
-                        <p><code>&lt;errorCode></code> SHOULD be replaced with the Failure Code described above, if not
-                            wanted MUST be <code>GenericError</code>.
                     </div>
                 <dt>the response's <code><a
                                 href=https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Type
                         >Content-Type</a></code> is not <code>application/json</code>
-                <dd>The <a href="<?= "../../Foundation/0.1.0/#Edge" ?>">Edge</a> MUST NOT automatically Retry, the Edge
+                <dd>The <a href="<?= "../../Foundation/0.2.0/#Edge" ?>">Edge</a> MUST NOT automatically Retry, the Edge
                     MUST inform the user the feature is unsupported. the Response body SHOULD be ignored.
             </dl>
     </ol>
@@ -270,7 +284,7 @@ require_once '../../createHeader.php' ?>
         <tr>
             <td><code><var>jti</var></code>
             <td>MUST be set to an uuid (is ignored in this specification, Planets MAY use this in a
-                <a href="<?= "../../Foundation/0.1.0/#Planet-Defined" ?>">Planet-Defined</a> way).
+                <a href="<?= "../../Foundation/0.2.0/#Planet-Defined" ?>">Planet-Defined</a> way).
         <tr>
             <td><code><var>nonce</var></code>
             <td>MUST be set to the Nonce given by the Planet.
@@ -336,4 +350,81 @@ require_once '../../createHeader.php' ?>
                 Return the Resulting DIDDocument.
         </ol>
     </aside>
+    <h2 is=SecurityConsiderations>Security Considerations</h2>
+    <h3 is=ThreatModel>ThreatModel</h3>
+    <p>This specification assumes the Planet is hosted on a
+        <a href="<?= "/standard/Foundation/0.2.0/#reasonably-capable-shared-hosting" ?>">
+            Reasonably Capable Shared Hosting Server</a> as defined in Foundation 0.2.0.</p>
+    <p>This specification assumes attackers can:</p>
+    <ul>
+        <li>Read, modify, and inject network packets</li>
+        <li>Attempt replay attacks</li>
+        <li>Submit malformed or malicious JWTs</li>
+    </ul>
+    <p>The following are OUT OF SCOPE:</p>
+    <ul>
+        <li>Compromised end-user devices</li>
+        <li>Side-channel attacks on implementations</li>
+        <li>Social engineering of users</li>
+    </ul>
+    <h3 id=mitigated-risks>Mitigated Risks</h3>
+    <p>The protocol design addresses the following threats:</p>
+    <div class=table-div>
+        <table class=flow-width>
+            <thead>
+            <tr>
+                <th>Risk</th>
+                <th>Mitigation</th>
+                <th>Spec Reference</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Replay attacks</td>
+                <td>Single-use nonces with 300s expiry</td>
+                <td><a href="#nonce-generation">§ Nonce Generation</a></td>
+            </tr>
+            <tr>
+                <td>Signature forgery</td>
+                <td>Ed25519 signatures (cryptographically secure)</td>
+                <td><a href="#Keygen">§ Key Generation</a></td>
+            </tr>
+            <tr>
+                <td>Nonce prediction</td>
+                <td>CSPRNG requirement, ≥128 bits entropy</td>
+                <td><a href="#nonce-requirements">§ Nonce Requirements</a></td>
+            </tr>
+            <tr>
+                <td>Session hijacking</td>
+                <td>HttpOnly, Secure cookies for PlanetaryCode</td>
+                <td><a href="#successfulAuthentication">§ Successful Auth</a></td>
+            </tr>
+            <tr>
+                <td>Algorithm confusion</td>
+                <td>Explicit <code>"alg": "EdDSA"</code> check, rejection of others</td>
+                <td><a href="#verification-steps">§ Verification Steps</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <h3 id=residual-risks>Residual Risks</h3>
+    <p>Even with all mitigations applied, the following risks remain:</p>
+    <dl class=dd-margin25>
+        <dt>Lost private keys:
+        <dd>No recovery mechanism exists.
+        <dt>Compromised User Device:
+        <dd>If user device is compromised, attacker can sign as user. This is outside the threat model.
+        <dt>Poor randomness:
+        <dd>Relies on host system CSPRNG quality. Implementations should check for sufficient entropy.
+        <dt>Timing attacks:
+        <dd>Ed25519 is designed constant-time, but implementation flaws could leak information.
+        <dt>Rate-Limits exceeded:
+        <dd class=sl>Implementations SHOULD implement <code><a
+                        href=https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/429>429</a></code>,
+            implementations MAY send a <code><a
+                        href=https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Retry-After
+                >HTTP Retry-After</a></code>. Implementations are encouraged to look for rate limiting resources
+            elsewhere as defining it is out of scope. the exact details of Rate-Limits are <a
+                    href="<?= "../../Foundation/0.2.0/#Planet-defined" ?>">Planet-defined</a>.
+    </dl>
 </div>

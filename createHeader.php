@@ -4,6 +4,7 @@ use function ANTHeader\ANTNavBinary;
 use function ANTHeader\create_head2;
 use ANTHeader\ANTNavLinkTag;
 use ANTHeader\ANTNavScript;
+use ANTHeader\ANTNavIStyle;
 
 require_once "{$_SERVER['DOCUMENT_ROOT']}/require/createHead2.php";
 $spec = '';
@@ -62,6 +63,7 @@ create_head2($title = "ANTRequest's $spec Specification (Version $major.$minor.$
 ], [new ANTNavLinkTag('stylesheet', ['/standard/layerzip.css', '/standard/w3sWarnings.css']),
     new ANTNavScript('/standard/variableSelection.js', true),
     new ANTNavArbitraryHTML('classstyle', '<style id=varstyle></style>'),
+    new ANTNavIStyle('.table-div{overflow-x:scroll;margin-top:1em}'),
 ], [ANTNavFavicond('https://ANTRequest.nl', 'ANT\'s Gallery'),
     ANTNavBinary('https://ANTRequest.nl/standard/', 'ANTRequest\'s Technical Specifications'),
     ANTNavBinary(".", $title, true)]);
