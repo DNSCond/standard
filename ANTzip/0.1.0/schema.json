@@ -15,8 +15,8 @@
     },
     "specVersion": {
       "type": "string",
-      "pattern": "^0\\.0\\.1$",
-      "description": "the specification version. MUST be matched against the specification for disambiguation. in this schema it MUST be {\"0.0.1\"}. SHOULD be matched to disambiguate specifics of a ANT.zip spec",
+      "pattern": "^0\\.1\\.0$",
+      "description": "the specification version. MUST be matched against the specification for disambiguation. in this schema it MUST be {\"0.1.0\"}. SHOULD be matched to disambiguate specifics of a ANT.zip spec",
       "$comment": "in terms of regex it must be {\"^\\d+\\.\\d+\\.\\d+$\"}"
     },
     "fileIntegrity": {

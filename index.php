@@ -39,8 +39,9 @@ foreach ($array as $item) {
             $matches = json_decode(file_get_contents(__DIR__ . '/lastModified.json'), true)['metadata'];
             foreach ($array as $slug => $item) {
                 $slugHTML = htmlspecialchars12($slug);
-                $result .= "<h3 id=\"$slugHTML\">$slugHTML</h3><div class=table><table><thead><tr><th scope=col>Version" .
-                        "<th scope=col>Last Modified<th scope=col>Warnings<th scope=col>Alternate Downloads</thead><tbody>";
+                $result .= "<h3 id=\"$slugHTML\">$slugHTML</h3><details open><summary>$slugHTML's specification list" .
+                        "</summary><div class=table><table><thead><tr><th scope=col>Version<th scope=col>Last File"
+                        . " Modified<th scope=col>Warnings<th scope=col>Alternate Downloads</thead><tbody>";
 
                 foreach ($item as $version) {
                     $versionHTML = "{$version['major']}.{$version['minor']}.{$version['patch']}";
@@ -59,7 +60,7 @@ foreach ($array as $item) {
                             $warnArray = $array['warning'];
                             if ($warnArray['warningLevel']) {
                                 $warning['warningLevel'] = match ($warnArray['warningLevel']) {
-                                    'warning' => 'warning',
+                                    'warning', 'warn' => 'warning',
                                     'danger' => 'danger',
                                     'info' => 'info',
                                     default => null,
@@ -81,25 +82,19 @@ foreach ($array as $item) {
                     } else {
                         $warningHTML = '<p>No applicable Warning';
                     }
-                    $result .= "<tr><td><a href=$slugHTML/$versionHTML/>$versionHTML</a><td>$htmlTimeTag<td>$warningHTML<td><a";
-                    $result .= " download=$slugHTML-$versionHTML.html href=$slugHTML/$versionHTML/>$versionHTML (download)</a>";
+                    $result .= "<tr><td><a href=$slugHTML/$versionHTML/>$versionHTML</a><td>$htmlTimeTag<td>$warningHTML<td>";
+                    //foreach (['html', 'md'] as $item) {
+                    //    $item = ".$item";
+                    //    $result .= " <a download=$slugHTML-$versionHTML$item href=$slugHTML/$versionHTML/>$versionHTML (download$item)</a>";
+                    //}
+                    $item = ".html";
+                    $result .= " <a download=$slugHTML-$versionHTML$item href=$slugHTML/$versionHTML/>$versionHTML (download$item)</a>";
                 }
-                $result .= "</tbody></table></div>";
+                $result .= "</tbody></table></div></details>";
             }
             return $result;
         })() ?></div>
-    <!--<div><?= (function () use ($array) {
-        $result = '';
-        foreach ($array as $slug => $item) {
-            $slugHTML = htmlspecialchars12($slug);
-            $result .= "<h3 id=\"$slugHTML\">$slugHTML</h3><ul>";
-            foreach ($item as $version) {
-                $versionHTML = "{$version['major']}.{$version['minor']}.{$version['patch']}";
-                $result .= "<li><a href=$slugHTML/$versionHTML/>$versionHTML</a>";
-            }
-            $result .= "</ul>";
-        }
-        return $result;
-    })() ?></div>-->
-    <!--<h2>Debug Data</h2><pre><code>&lt;?= htmlspecialchars12(json_fromArray(['$array' => $array])) ?></code></pre>-->
+    <h2 id=ai>Ai Acknowledgement</h2>
+    <p>Thanks to DeepSeek Gemini, Grok, and ChatGPT for guidance writing all these specifications while proofreading
+        (except LayerZip).
 </div>

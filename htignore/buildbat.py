@@ -1,6 +1,7 @@
 import json, hashlib
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any
 import fnmatch
 import os, re
 import shutil
@@ -104,7 +105,8 @@ class GitIgnore:
 
         return ignored
 
-    def copy_to(self, src: Path, dst: Path) -> int:
+    def copy_to(self, src: Path, dst: Path) -> dict[str, int | list[Any]]:
+        all_paths = list()
         src = src.resolve()
         dst = dst.resolve()
         moved = int()
@@ -113,7 +115,7 @@ class GitIgnore:
             nonlocal moved
             if self.should_ignore(current_src):
                 return
-
+            all_paths.append(dict(current_src=current_src, current_dst=current_dst))
             if current_src.is_dir():
                 moved += 1
                 current_dst.mkdir(parents=True, exist_ok=True)
@@ -125,7 +127,7 @@ class GitIgnore:
                 shutil.copy2(current_src, current_dst)
 
         _copy_recursive(src, dst)
-        return moved
+        return dict(moved=moved, all_paths=all_paths)
 
     pass
 
@@ -185,7 +187,18 @@ def main():
     gitignored.add_ignore_rule('*.iml')
     gitignored.add_ignore_rule('.git/')
     gitignored.add_ignore_rule('.idea/')
-    print('moved', gitignored.copy_to(directory, dst), 'items')
+    r = gitignored.copy_to(directory, dst)
+    print('moved', r['moved'], 'items')
+    # addition = int()
+    # for pathdict in r['all_paths']:
+    #     src = pathdict['current_src']
+    #     dst = pathdict['current_dst']
+    #     if str(src).endswith('.html'):
+    #         with (open(src, 'wt', encoding='utf8') as inv,
+    #               open(re.sub('\\.html$', '.md', str(dst)), 'wt', encoding='utf8') as out):
+    #             out.write(markdownify(inv.read()))
+    #         addition += 1
+    # print('moveded', r['moved'] + addition, 'items')
     pass
 
 

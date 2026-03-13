@@ -63,6 +63,7 @@ create_head2($title = "ANTRequest's $spec Specification (Version $major.$minor.$
 ], [new ANTNavLinkTag('stylesheet', ['/standard/layerzip.css', '/standard/w3sWarnings.css']),
     new ANTNavScript('/standard/variableSelection.js', true),
     new ANTNavArbitraryHTML('classstyle', '<style id=varstyle></style>'),
+    new ANTNavIStyle('.warnbox-margin.warnbox-margin.warnbox-margin{margin:1em 0}'),
     new ANTNavIStyle('.table-div{overflow-x:scroll;margin-top:1em}'),
 ], [ANTNavFavicond('https://ANTRequest.nl', 'ANT\'s Gallery'),
     ANTNavBinary('https://ANTRequest.nl/standard/', 'ANTRequest\'s Technical Specifications'),

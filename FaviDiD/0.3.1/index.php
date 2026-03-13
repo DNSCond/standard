@@ -33,7 +33,7 @@ require_once '../../createHeader.php' ?>
                 }
             }
             return $result;
-        })(['Foundation/0.2.0']) ?></ul>
+        })(['Foundation/0.3.0']) ?></ul>
     <h2 id=external>This Specification uses external references</h2>
     <ul class=li-margin05>
         <li><a href=https://www.rfc-editor.org/rfc/rfc2119>The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
@@ -107,7 +107,7 @@ require_once '../../createHeader.php' ?>
                                 : "{$GLOBALS['major']}")) ?></code> MUST be present for this specification.
             <ol>
                 <li id=nonce-generation>Generate a Nonce and keep it for 300 Seconds. <span id=nonce-requirements>how you
-                        create the Nonce is <a href="<?= "../../Foundation/0.2.0/#Planet-defined" ?>">Planet-defined</a>
+                        create the Nonce is <a href="<?= "../../Foundation/0.3.0/#Planet-defined" ?>">Planet-defined</a>
                         but MUST be within the base58 alphabet. Nonce MUST be >=128 bits entropy (e.g. 22–32 random bytes ->
                     base58, resulting in ~30–44 chars). Planets MUST NOT generate nonces shorter than 16 bytes.</span>
                 <li>associate the Nonce with the <code>F-FaviDiD:</code>.
@@ -172,7 +172,7 @@ require_once '../../createHeader.php' ?>
                             <tr>
                                 <td><code><var>PlanetaryCode</var></code>
                                 <td>MUST be a Cryptographically Secure Session token of <a
-                                            href="<?= "../../Foundation/0.2.0/#Planet-Defined" ?>">Planet-Defined</a>
+                                            href="<?= "../../Foundation/0.3.0/#Planet-Defined" ?>">Planet-Defined</a>
                                     generation. the cookie expiration advertised MUST be when the session token expires.
                                     MUST set the <code>Secure</code> flag, SHOULD set the <code>HttpOnly</code> flag.
                                 <td>
@@ -198,10 +198,10 @@ require_once '../../createHeader.php' ?>
                         <p>The <a href=https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Retry-After
                             >HTTP Retry-After Header SHOULD be set (MUST be either an integer number of seconds (e.g.
                                 300) or an HTTP-date string (RFC 7231).)</a> Indicating how long an <a
-                                    href="<?= "../../Foundation/0.2.0/#Edge" ?>">Edge</a> SHOULD wait before retrying.
+                                    href="<?= "../../Foundation/0.3.0/#Edge" ?>">Edge</a> SHOULD wait before retrying.
                             if the value signals a date after 1 hour compared to the <a
                                     href=https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Date
-                            >HTTP Date Header</a> the <a href="<?= "../../Foundation/0.2.0/#Edge" ?>">Edge</a> MUST
+                            >HTTP Date Header</a> the <a href="<?= "../../Foundation/0.3.0/#Edge" ?>">Edge</a> MUST
                             abort automatic Retries, and SHOULD honor the Request, only retrying at User Request. if not
                             set Edges SHOULD interpret <code>Retry-After: 15</code>
                         <aside class='warnbox info'><p><strong>Info!</strong>
@@ -211,7 +211,7 @@ require_once '../../createHeader.php' ?>
                 <dt>the response's <code><a
                                 href=https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Type
                         >Content-Type</a></code> is not <code>application/json</code>
-                <dd>The <a href="<?= "../../Foundation/0.2.0/#Edge" ?>">Edge</a> MUST NOT automatically Retry, the Edge
+                <dd>The <a href="<?= "../../Foundation/0.3.0/#Edge" ?>">Edge</a> MUST NOT automatically Retry, the Edge
                     MUST inform the user the feature is unsupported. the Response body SHOULD be ignored.
             </dl>
     </ol>
@@ -286,7 +286,7 @@ require_once '../../createHeader.php' ?>
         <tr>
             <td><code><var>jti</var></code>
             <td>MUST be set to an uuid (is ignored in this specification, Planets MAY use this in a
-                <a href="<?= "../../Foundation/0.2.0/#Planet-Defined" ?>">Planet-Defined</a> way).
+                <a href="<?= "../../Foundation/0.3.0/#Planet-Defined" ?>">Planet-Defined</a> way).
         <tr>
             <td><code><var>nonce</var></code>
             <td>MUST be set to the Nonce given by the Planet.
@@ -355,8 +355,8 @@ require_once '../../createHeader.php' ?>
     <h2 is=SecurityConsiderations>Security Considerations</h2>
     <h3 is=ThreatModel>ThreatModel</h3>
     <p>This specification assumes the Planet is hosted on a
-        <a href="<?= "/standard/Foundation/0.2.0/#reasonably-capable-shared-hosting" ?>">
-            Reasonably Capable Shared Hosting Server</a> as defined in Foundation 0.2.0.</p>
+        <a href="<?= "/standard/Foundation/0.3.0/#Standard-Supported-shared-host" ?>">
+            Standard Supported Shared Host Server</a> as defined in Foundation 0.3.0.</p>
     <p>This specification assumes attackers can:</p>
     <ul>
         <li>Read, modify, and inject network packets</li>
@@ -427,6 +427,6 @@ require_once '../../createHeader.php' ?>
                         href=https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Retry-After
                 >HTTP Retry-After</a></code>. Implementations are encouraged to look for rate limiting resources
             elsewhere as defining it is out of scope. the exact details of Rate-Limits are <a
-                    href="<?= "../../Foundation/0.2.0/#Planet-defined" ?>">Planet-defined</a>.
+                    href="<?= "../../Foundation/0.3.0/#Planet-defined" ?>">Planet-defined</a>.
     </dl>
 </div>
