@@ -39,6 +39,16 @@ require_once '../../createHeader.php' ?>
                 interpreted as described in RFC 2119.</a>
         <li><a href=https://www.rfc-editor.org/rfc/rfc3339>Datetime Format</a>
     </ul>
+    <h2 id=Why>Why?</h2>
+    <p>While you use the web like a regular person, you might not have any idea how Decentralized systems work.
+        <dfn>Decentralized</dfn> means without a central authority, by usually it is an "almost". while ANTRequest's
+        Specifications are also an "almost". i try to lessen the impact of ANTRequest's eventul disappearance by
+        promoting <a href="<?= "../../Foundation/0.4.0/#Philosophy" ?>">"<em>Fork Build Deploy</em>" as seen in the
+            Philosophy section of the Foundation</a>.
+    <p>But you cant have a Decentralized Network without having a Network, and you cant have a Network without finding
+        other Nodes. <a href=#planetpeer_json><code class=sl>planetpeer.json</code></a> solves the "find more Planets
+        using a starting point". but you might not have a starting point, that is the <dfn>bootstrapping problem</dfn>
+        how to find your first planet when you have none.
     <h2 id=planetpeer_json><code class=sl>planetpeer.json</code></h2>
     <p class=sl>A <dfn id=planetpeer.json><code>planetpeer.json</code></dfn> is a JSON file that MUST be accessible at
         <code>https://{domain}<a href="<?= "../../FaviDiD/0.3.1/#/Favicond_/" ?>"><code>/Favicond_/</code></a>planetpeer.json</code>
@@ -57,7 +67,7 @@ require_once '../../createHeader.php' ?>
         ecosystem Servers (called Planets) are an important part of the ecosystem, where Peer means <a
                 href="<?= "../../Foundation/0.4.0/#Edge" ?>">Edges</a>, <dfn><a href=#PlanetaryPeer>Planetary
                 Peer</a></dfn> means Peers as Planets.
-    <p>To Support a decentralized Network, Planets are recommended to have as many <a href=#PlanetaryPeer>Planetary
+    <p>To Support a Decentralized Network, Planets are recommended to have as many <a href=#PlanetaryPeer>Planetary
             Peers</a> as possible as they wish. <a href=#PlanetaryPeer>Planetary Peer</a> object's
         structure is at follows. (the Field description MUST be followed, if you do not wish to implement a field, do
         not include it in the JSON)
@@ -72,6 +82,13 @@ require_once '../../createHeader.php' ?>
                 <td>the plate's Origin, <a
                             href=https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Origin>in the
                         format of the Origin Header</a>, Ports and Plain HTTP schemes MUST not be listed at all.
+            <tr>
+                <td><code>LastFetched</code>
+                <td>string
+                <td>MAY</td>
+                <td>When the current planet Last Fetched the planet's <a
+                            href="<?= "../../PlanetSpec/0.4.0/#planet_json" ?>"
+                    ><code>planet.json</code></a> in the RFC 3339 Format.
             </tbody>
         </table>
     </div>

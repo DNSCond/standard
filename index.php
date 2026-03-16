@@ -12,7 +12,7 @@ create_head2($title = 'ANTRequest\'s Technical Specification', [
         new ANTNavLinkTag('stylesheet', ['/standard/layerzip.css', '/standard/w3sWarnings.css']),
         new ANTNavIStyle('.warnbox{margin-bottom:0}.table{overflow-x:scroll;margin-top:1em}'),
 ], [ANTNavFavicond('https://ANTRequest.nl', 'ANT\'s Gallery'),
-        ANTNavBinary('https://ANTRequest.nl', $title, true)]);
+        ANTNavBinary('https://ANTRequest.nl/standard/', $title, true)]);
 
 $array = array();
 foreach (glob("{$_SERVER['DOCUMENT_ROOT']}/standard/*/*/index.php") as $entry) {
