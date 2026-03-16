@@ -1,0 +1,6 @@
+{
+  "warning": {
+    "warningLevel": "warning",
+    "warningContent": "This specification is unfinished. while you MAY implement it as written, the update comes in the form of a version bump."
+  }
+}

@@ -43,7 +43,7 @@ foreach ($array as $item) {
                         "</summary><div class=table><table><thead><tr><th scope=col>Version<th scope=col>Last File"
                         . " Modified<th scope=col>Warnings<th scope=col>Alternate Downloads</thead><tbody>";
 
-                foreach ($item as $version) {
+                foreach (array_reverse($item) as $version) {
                     $versionHTML = "{$version['major']}.{$version['minor']}.{$version['patch']}";
                     $major = $version['major'];
                     $minor = $version['minor'];
@@ -82,7 +82,7 @@ foreach ($array as $item) {
                     } else {
                         $warningHTML = '<p>No applicable Warning';
                     }
-                    $result .= "<tr><td><a href=$slugHTML/$versionHTML/>$versionHTML</a><td>$htmlTimeTag<td>$warningHTML<td>";
+                    $result .= "<tr><td><a href=$slugHTML/$versionHTML/>$slugHTML $versionHTML</a><td>$htmlTimeTag<td>$warningHTML<td>";
                     //foreach (['html', 'md'] as $item) {
                     //    $item = ".$item";
                     //    $result .= " <a download=$slugHTML-$versionHTML$item href=$slugHTML/$versionHTML/>$versionHTML (download$item)</a>";

@@ -124,3 +124,77 @@ function base58_encode(string $bytes): string
     }
     return str_repeat('1', $zeroCount) . $result;
 }
+
+readonly class NumberToEnglish
+{
+    public function __construct(private int $number)
+    {
+    }
+
+    public function __toString(): string
+    {
+        $number = $this->number;
+        if ($number < 0) return 'Negative ' . new self(-$number);
+        if ($number === 0) return 'Zero';
+        if ($string = match ($number) {
+            10 => 'Ten',
+            11 => 'Eleven',
+            12 => 'Twelve',
+            13 => 'Thirteen',
+            15 => 'Fifteen',
+            18 => 'Eighteen',
+            default => null,
+        }) return $string;
+        if ($number < 10) {
+            return "{$this->handleOnes()}";
+        }
+        if ($number < 20) {
+            return "{$this->handleOnes()}Teen";
+        }
+        if ($number < 100) {
+            return rtrim("{$this->handleTens()} {$this->handleOnes()}");
+        }
+        $hundred = new self(($number / 100) % 100);
+        if ($number < 1000) {
+            $ri = new self($number % 100)->toString();
+            return "$hundred Hundred" . ($ri === 'Zero' ? '' : " $ri");
+        }
+        return '[[TooLarge]]';
+    }
+
+    function handleOnes(): ?string
+    {
+        return match ($this->number % 10) {
+            1 => 'One',
+            2 => 'Two',
+            3 => 'Three',
+            4 => 'Four',
+            5 => 'Five',
+            6 => 'Six',
+            7 => 'Seven',
+            8 => 'Eight',
+            9 => 'Nine',
+            default => null,
+        };
+    }
+
+    function handleTens(): ?string
+    {
+        return match (($this->number / 10) % 10) {
+            2 => 'Twenty',
+            3 => 'Thirty',
+            4 => 'Forty',
+            5 => 'Fifty',
+            6 => 'Sixty',
+            7 => 'Seventy',
+            8 => 'Eighty',
+            9 => 'Ninety',
+            default => null,
+        };
+    }
+
+    public function toString(): string
+    {
+        return "$this";
+    }
+}
