@@ -486,10 +486,10 @@ require_once '../../createHeader.php' ?>
             opaque identifier representing an image. It MUST:</p>
         <ul>
             <li>Be unique among all Texture Handlers.
-            <li>Become invalid after <code><var>free_texture</var></code> is called.
+            <li>Become invalid after <code><var>texture_free</var></code> is called.
             <li>Not be reusable once closed.
             <li>Be automatically closed when the current game session ends. Games SHOULD explicitly close files with
-                <code>free_texture</code>, but the Edge MUST clean up any remaining open handlers at game termination.
+                <code>texture_free</code>, but the Edge MUST clean up any remaining open handlers at game termination.
         </ul>
     </div>
     <h2 id=Mains>Main</h2>
@@ -722,7 +722,7 @@ require_once '../../createHeader.php' ?>
                     </ol>
             <tr id=FileExtensionV1.file_mtime>
                 <td><code><var>file_mtime</var></code>
-                <td><code>(<var>file_handler</var>: i32): i32</code>
+                <td><code>(<var>file_handler</var>: i32): i64</code>
                 <td>OPTIONAL Import
                 <td>Do the following in order
                     <ol>
@@ -851,7 +851,7 @@ require_once '../../createHeader.php' ?>
                                     the same time. this one does not.
                             </aside>
                         <li>Return an <a href="<?= "../../Foundation/0.4.0/#Edge-Defined" ?>">Edge-Defined</a> integer
-                            representing a <a href=>Video Handler</a>.
+                            representing a <a href=#VideoHandlerType>Video Handler</a>.
                     </ol>
             <tr id=screenvideoV1.take_video_snapshot>
                 <td><code><var>take_video_snapshot</var></code>
@@ -861,7 +861,7 @@ require_once '../../createHeader.php' ?>
                     <ol>
                         <li>If the game Has Not started yet, Return <span><?= errorcode(-4) ?></span>.
                         <li>If <var>video_handler</var> does not correlate to any Active Video Handler, Return
-                            <span><?= errorcode(-4) ?></span>.
+                            <span><?= errorcode(-3) ?></span>.
                         <li>Take a screenshot of the Game's Screen and save it as a video frame. It is very important
                             that you only save the Game's Screen as required for privacy.
                         <li>Return <span><?= errorcode(0) ?></span>.
@@ -874,7 +874,7 @@ require_once '../../createHeader.php' ?>
                     <ol>
                         <li>If the game Has Not started yet, Return <span><?= errorcode(-4) ?></span>.
                         <li>If <var>video_handler</var> does not correlate to any Active Video Handler, Return
-                            <span><?= errorcode(-1) ?></span>.
+                            <span><?= errorcode(-3) ?></span>.
                         <li>convert the <var>video_handler</var> to an image/webm file and store it.
                         <li>close the <var>video_handler</var>.
                         <li>If no frames were captured Return <span><?= errorcode(0) ?></span>. No File is created.
